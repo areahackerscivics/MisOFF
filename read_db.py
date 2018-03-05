@@ -3,16 +3,19 @@
 import re
 import sys
 import variables
+import logging
 from pymongo import MongoClient
 from random import randint
+
+
 
 ##------------------------------------------------------------------------
 ## conexión MongoDB
 ##------------------------------------------------------------------------
 
 try:
-  #client = MongoClient('localhost',27017)
-  client = MongoClient('mongodb://{}:{}@localhost:27017/'.format(variables.user_mongo,variables.passw_mongo))
+  client = MongoClient('localhost',27017)
+  #client = MongoClient('mongodb://{}:{}@localhost:27017/'.format(variables.user_mongo,variables.passw_mongo))
 except Exception as e:
   logging.exception("- Error al conectarse a la BD de MongoDB: ") 
 
@@ -23,6 +26,19 @@ except Exception as e:
  
 db = client.song
 tmp = db.tmp
+
+def canciones_faltantes_por_analisar():
+ 
+ pipeline = [
+     #{"$unwind": "$analisis"},
+     {"$group": {"_id": "$analisis", "count": {"$sum": 1}}}
+      ]
+ 
+
+ faltantes_pop = db.pop.find().count()-list(db.pop.aggregate(pipeline))[0]["count"]
+ faltantes_regueton = db.regueton.find().count()-list(db.regueton.aggregate(pipeline))[0]["count"]
+ faltantes_romantica = db.romantica.find().count()-list(db.romantica.aggregate(pipeline))[0]["count"]
+ return faltantes_pop, faltantes_regueton, faltantes_romantica
 
 # devuelve una colección segun el género seleccionado. 
 def musical_genre(select):
@@ -59,7 +75,12 @@ def new_song(update):
   analyzed = 1
   
   if tmp.find({"user_id":update.message.chat.id}).count()>0:
-     anterior_songId = tmp.find_one({"user_id":update.message.chat.id})["songId"]
+     try:
+       anterior_songId = tmp.find_one({"user_id":update.message.chat.id})["songId"]
+     except Exception as e:
+        drop(update)
+        logging.exception("se creo una base de datos temporal de usuario, pero no se almaceno la songId")
+
   drop(update)
   try:
     tmp.insert({"user_id":update.message.chat.id,
@@ -132,10 +153,11 @@ def analyzed(update):
     genero.update({"_id":song_id},{"$inc":{"analisis":1}})
   except Exception as e:
       logging.exception("no se pudo actualizar datos de la canción")
+
   data = genero.find_one({"_id":song_id})["analisis"]
   # si 5 usuarios diferentes terminan de analizar esta cancion la da por validad.
   
-  if data > 5:
+  if data > 4:
     genero.update({"_id":song_id},{"$set":{"valid":1}})
 
 def drop(update):
@@ -180,4 +202,6 @@ def lyrics(update):
    return letra , keys
 
 
+#if __name__=='__main__':
 
+#  canciones_faltantes_por_analisar()

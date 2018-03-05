@@ -13,7 +13,7 @@ from telegram.ext import (Updater, CommandHandler, MessageHandler, ConversationH
 
 EDAD, SEXO ,CANCIONES ,ESTEROTIPO, GENRE, AWNSER1, ROLES, AWNSER2, PODER, AWNSER3, CUERPO, AWNSER4,GENERAL, AWNSER5, END1 = range(15)
 
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+logging.basicConfig(filename="MisOFF.log", format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
 
 logger = logging.getLogger(__name__)
@@ -145,10 +145,10 @@ def canciones(bot, update ):
     
     if read_db.new_song(update):
     #selecciona una cancion nueva
-        bot.sendMessage(chat_id = update.message.chat_id, text = '!!!Disculpad, tenemos que ampliar la base de datos, prueba con otro género.',
-                        reply_markup =ReplyKeyboardRemove() )
+        bot.sendMessage(chat_id = update.message.chat_id, text = '!!!Faltan por analizar %d canciones del género pop, %d de reguetón y %d romántica.' %(read_db.canciones_faltantes_por_analisar()) ,
+                        reply_markup = teclado(4) )
         
-        return ConversationHandler.END
+        return CANCIONES 
     #extrae la letra de la cancion de la base de dato
     letras , keys = read_db.lyrics(update)
 
