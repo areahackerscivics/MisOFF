@@ -1,7 +1,7 @@
 # MisOFF_Bot
 
 ## Descripción
-Este proyecto ha sido desarrollado conjuntamente por las Naves, el IES Malilla y la Càtedra Govern Obert, Participació i Open Data.
+Este proyecto ha sido desarrollado conjuntamente por las Naves, el IES Malilla y la Càtedra Govern Obert.
 uno de las grandes problemas que nos enfrentamos actualmente en la sociedad es la desigualdad de género, de allí nace el proyecto **MisOFF** contra la misoginia. 
 
 Queremos dar herramientas tecnológicas a la ciudadanía para crear conciencia sobre el contenido misógino de algunas canciones mas escuchadas en la actualidad. Por ello surgió la idea de crear un bot de análisis de canciones, que les permita a los ciudadanos de España analizar la letra de las canciones mas escuchadas en los medios y que esto sirva para cambiar los hábitos de consumo de música entre los españoles, en consecuencia que los medios se adapten y vean en la necesidad de modificar el contenido musical que transmiten.
