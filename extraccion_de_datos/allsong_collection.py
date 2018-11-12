@@ -12,7 +12,7 @@ from random import randint
 ##------------------------------------------------------------------------
 
 try:
-  client = MongoClient('localhost',27017)
+  client = MongoClientMongoClient(f"mongodb://{variables.user_mongo}:{variables.passw_mongo}@ds213053.mlab.com:13053/misoff")
   #client = MongoClient('mongodb://{}:{}@localhost:27017/'.format(variables.user_mongo,variables.passw_mongo))
 except Exception as e:
   logging.exception("- Error al conectarse a la BD de MongoDB: ") 

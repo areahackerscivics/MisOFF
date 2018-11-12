@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 import requests
-import config_s
+import variables
 from bs4 import BeautifulSoup
 
 
@@ -43,4 +43,3 @@ def lyrics(song_title, artist_name):
     return lyrics_from_song_api_path(song_api_path)
   else:
     print("lyrics not found {}".format(song_title))
-
